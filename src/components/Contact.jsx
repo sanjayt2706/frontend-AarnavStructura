@@ -23,18 +23,50 @@ const Contact = () => {
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const submit = async (e) => {
-    e.preventDefault();
-    setStatus({ state: "sending", msg: "" });
-    try {
-      await submitEnquiry(form);
-      setStatus({ state: "ok", msg: "✓ Received — we'll call you within 24 hours" });
-      setForm(INIT);
-      setTimeout(() => setStatus({ state: "idle", msg: "" }), 6000);
-    } catch {
-      setStatus({ state: "err", msg: "Something went wrong. Please call us directly." });
-    }
-  };
+const submit = async (e) => {
+  e.preventDefault();
+
+  setStatus({
+    state: "sending",
+    msg: ""
+  });
+
+  try {
+    const res = await submitEnquiry(form);
+
+    console.log("SUCCESS:", res);
+
+    setStatus({
+      state: "ok",
+      msg: "✓ Received — we'll call you within 24 hours"
+    });
+
+    setForm(INIT);
+
+    setTimeout(() => {
+      setStatus({
+        state: "idle",
+        msg: ""
+      });
+    }, 6000);
+
+  } catch (err) {
+
+    console.log(err);
+    console.log(err.response);
+    console.log(err.response?.data);
+
+    alert(JSON.stringify(err.response?.data || err.message));
+
+    setStatus({
+      state: "err",
+      msg:
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong."
+    });
+  }
+};
 
   return (
     <section className="section section-surface" id="contact">
