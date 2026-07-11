@@ -89,7 +89,10 @@ const submit = async (e) => {
               <div className="cicon">📞</div>
               <div>
                 <div className="clabel">Call us</div>
-                <div className="cval">+91 77603 76348 / +91 87623 98728</div>
+                <div className="cval">
+                          <a href="tel:+917760376348" style={{ color: "var(--gold-lt)" }}>+91 77603 76348</a><br></br>
+                          <a href="tel:+918762398728" style={{ color: "var(--gold-lt)" }}>+91 87623 98728</a>
+                </div>
                 <div className="csub">Mon – Sat, 9 am – 7 pm IST</div>
               </div>
             </div>
@@ -97,7 +100,8 @@ const submit = async (e) => {
               <div className="cicon">✉️</div>
               <div>
                 <div className="clabel">Email</div>
-                <div className="cval">satvikrajgowda282@gmail.com</div>
+                <div className="cval"><a href="mailto:satvikrajgowda282@gmail.com" style={{ color: "var(--gold-lt)" }}>satvikrajgowda282@gmail.com/</a></div>
+                <div className="cval"><a href="anrcreativecivilarchitecture@gmail.com" style={{ color: "var(--gold-lt)" }}>anrcreativecivilarchitecture@gmail.com</a></div>
                 <div className="csub">Response within 24 hours</div>
               </div>
             </div>

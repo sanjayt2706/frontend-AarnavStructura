@@ -40,7 +40,7 @@ const Footer = () => (
       </div>
     </div>
     <div className="footer-bar">
-      <span>© {new Date().getFullYear()} Aarnav Structura · A subsidiary of <a href="https://anrvictoriumgroup.netlify.app" style={{ color: "var(--gold-lt)" }}>ANR Victorium Group</a> · Shivamogga, Karnataka</span>
+      <span>© {new Date().getFullYear()} Aarnav Structura · A subsidiary of <a href="" style={{ color: "var(--gold-lt)" }}>ANR Victorium Group</a> · Shivamogga, Karnataka</span>
       <span>Built with precision. Delivered with integrity.</span>
     </div>
   </footer>

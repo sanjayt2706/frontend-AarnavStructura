@@ -1,28 +1,31 @@
-// Replace image URLs and details with actual team member photos and bios.
+import founder from "../assets/engineers/founder.png";
+import engineer1 from "../assets/engineers/engineer1.png";
+import placeholder from "../assets/engineers/local.webp";
+
 const TEAM = [
   {
-    name: "Aarnav Kumar",
+    name: "Satvik R",
     role: "Founder & Structural Engineer",
-    bio: "15+ years in civil and structural engineering. Specialises in RCC design and IS code compliance across Karnataka.",
-    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+    bio: "5+ years in civil and structural engineering. Specialises in RCC design and IS code compliance across Karnataka.",
+    img: founder,
   },
   {
-    name: "Priya Nair",
+    name: "Prajwal GH",
     role: "Lead Architect",
     bio: "Licensed architect with expertise in residential and commercial design, BBMP/BDA submissions, and 3D visualisation.",
-    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+    img: engineer1,
   },
   {
     name: "Rajan Hegde",
     role: "Project Manager",
     bio: "Oversees timeline, contractor coordination, and milestone billing across all active project sites.",
-    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+    img: placeholder,
   },
   {
     name: "Sneha Kulkarni",
     role: "Interior Designer",
     bio: "Transforms raw spaces into functional, elegant interiors for residential, hospitality, and retail clients.",
-    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
+    img: placeholder,
   }
 ];
 
