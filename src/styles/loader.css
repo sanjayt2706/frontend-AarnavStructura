@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap");
+
+.loader {
+  --ink: #0a0a0c;
+  --ink-raised: #131318;
+  --gold: #c9a227;
+  --gold-dim: rgba(201, 162, 39, 0.4);
+  --gold-faint: rgba(201, 162, 39, 0.1);
+  --ivory: #f2ede2;
+  --muted: #8a8579;
+
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(120% 100% at 50% 40%, var(--ink-raised) 0%, var(--ink) 70%);
+  overflow: hidden;
+  z-index: 999999;
+}
+
+/* Restrained drafting grid — static, no motion. It's texture, not the signature. */
+.loader__grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--gold-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gold-faint) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(70% 70% at 50% 45%, black 0%, transparent 75%);
+}
+
+/* Corner registration marks, like alignment crosses on a printed sheet */
+.loader__reg {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  opacity: 0.35;
+}
+.loader__reg::before,
+.loader__reg::after {
+  content: "";
+  position: absolute;
+  background: var(--gold);
+}
+.loader__reg::before {
+  top: 8px;
+  left: 0;
+  width: 18px;
+  height: 1px;
+}
+.loader__reg::after {
+  top: 0;
+  left: 8px;
+  width: 1px;
+  height: 18px;
+}
+.loader__reg--tl {
+  top: 32px;
+  left: 32px;
+}
+.loader__reg--tr {
+  top: 32px;
+  right: 32px;
+}
+.loader__reg--bl {
+  bottom: 32px;
+  left: 32px;
+}
+.loader__reg--br {
+  bottom: 32px;
+  right: 32px;
+}
+
+.loader__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.loader__blueprint {
+  width: 168px;
+  height: 224px;
+  filter: drop-shadow(0 0 14px rgba(201, 162, 39, 0.25));
+}
+
+.loader__mark {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.loader__logotype {
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 42px;
+  letter-spacing: 0.14em;
+  color: var(--ivory);
+  line-height: 1;
+}
+
+.loader__tagline {
+  margin-top: 10px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Scale bar: doubles as a drafting ruler and an honest progress readout */
+.loader__scale {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.loader__scale-track {
+  position: relative;
+  width: 180px;
+  height: 14px;
+}
+
+.loader__scale-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--gold-dim);
+}
+
+.tick {
+  width: 1px;
+  height: 4px;
+  background: var(--gold-dim);
+}
+.tick--major {
+  height: 8px;
+  background: var(--gold);
+}
+
+.loader__scale-marker {
+  position: absolute;
+  bottom: -1px;
+  width: 1px;
+  height: 14px;
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--gold);
+  transform: translateX(-50%);
+}
+
+.loader__percent {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ivory);
+  letter-spacing: 0.04em;
+  min-width: 34px;
+  font-variant-numeric: tabular-nums;
+}
+
+.loader__percent-sign {
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 1px;
+}
+
+@media (max-width: 480px) {
+  .loader__blueprint {
+    width: 130px;
+    height: 174px;
+  }
+  .loader__logotype {
+    font-size: 32px;
+  }
+  .loader__scale-track {
+    width: 140px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__grid {
+    mask-image: none;
+  }
+}

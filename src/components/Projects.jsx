@@ -1,5 +1,9 @@
 // Replace image URLs with actual project photos before launch.
 // Unsplash images used as high-quality placeholders.
+import project1 from "../assets/projects/IMG-20260711-WA0140.jpg";
+import project2 from "../assets/projects/IMG-20260711-WA0143.jpg";
+import project3 from "../assets/projects/IMG-20260711-WA0144.jpg";
+import project4 from "../assets/projects/IMG-20260711-WA0137.jpg";
 const PROJECTS = [
   {
     type: "Residential",
@@ -29,7 +33,7 @@ const PROJECTS = [
     type: "Residential",
     name: "Hilltop Duplex",
     loc: "Thirthahalli, Karnataka",
-    img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=700&q=80"
+    img: project4
   }
 ];
 
