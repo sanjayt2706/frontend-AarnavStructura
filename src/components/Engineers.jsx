@@ -7,7 +7,7 @@ const TEAM = [
     name: "Satvik R",
     role: "Founder & Structural Engineer",
     bio: "5+ years in civil and structural engineering. Specialises in RCC design and IS code compliance across Karnataka.",
-    img: founder,
+    // img: founder,
     portfolio: "https://pie-nitrogen-a01.notion.site/ebd//2ed92d829a8e804d8ab6d6e4de1239a4"
   },
   {
@@ -66,9 +66,9 @@ const Engineers = () => (
       <div className="engineers-grid reveal">
         {TEAM.map((m) => (
           <div className="eng-card" key={m.name}>
-            <div className="eng-photo">
+            {/* <div className="eng-photo">
               <img src={m.img} alt={m.name} loading="lazy" />
-            </div>
+            </div> */}
 
             <div className="eng-body">
               <div className="eng-name">
