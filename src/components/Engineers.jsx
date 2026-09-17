@@ -228,7 +228,7 @@ const Engineers = () => {
                         </div>
                         <span style={{ fontSize: "11px", letterSpacing: "1px", color: "var(--muted)", marginTop: 10, textTransform: "uppercase" }}>
                           Aarnav Team
-                        </span}
+                        </span>
                       </div>
                     )}
                   </div>
