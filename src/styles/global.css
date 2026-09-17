@@ -508,3 +508,157 @@ footer { background: var(--bg); border-top: 1px solid rgba(217,166,60,0.12); pos
     animation: none !important; transition: none !important; opacity: 1 !important;
   }
 }
+
+/* ─── PROJECT DETAIL MODAL ─── */
+.project-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px); z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: modal-fade-in 0.3s ease-out forwards;
+}
+.project-modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  width: 100%; max-width: 1100px; max-height: 90vh;
+  border-radius: var(--r); overflow: hidden;
+  display: flex; flex-direction: column;
+  animation: modal-scale-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
+}
+.project-modal-header {
+  padding: 32px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.project-modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--ink); }
+.project-modal-meta { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.project-modal-badge {
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold); background: var(--chip);
+  padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(217,166,60,0.3);
+}
+.project-modal-close {
+  background: transparent; border: none; color: var(--muted);
+  cursor: pointer; font-size: 24px; line-height: 1; transition: color 0.2s;
+}
+.project-modal-close:hover { color: var(--ink); }
+
+.project-tabs {
+  display: flex; border-bottom: 1px solid var(--border);
+  background: var(--bg); padding: 0 32px;
+}
+.project-tab-btn {
+  padding: 16px 24px; background: transparent; border: none;
+  color: var(--muted); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: color 0.2s, border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+}
+.project-tab-btn.active {
+  color: var(--gold); border-bottom-color: var(--gold);
+}
+.project-tab-content {
+  padding: 32px; overflow-y: auto; flex: 1;
+}
+.project-detail-section { margin-bottom: 32px; }
+.project-detail-label {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px; display: block;
+}
+.project-detail-text {
+  font-size: 14px; color: var(--muted); line-height: 1.8; font-weight: 300;
+}
+
+.video-responsive {
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
+  background: #000; border: 1px solid var(--border);
+  margin-bottom: 24px; overflow: hidden;
+}
+.video-responsive iframe, .video-responsive video {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+}
+
+.media-gallery-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px; margin-top: 16px;
+}
+.media-item {
+  aspect-ratio: 4 / 3; background: var(--bg); border: 1px solid var(--border);
+  overflow: hidden; cursor: pointer; transition: transform 0.3s;
+}
+.media-item:hover { transform: scale(1.02); border-color: var(--gold); }
+.media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+
+.document-list { display: flex; flex-direction: column; gap: 12px; }
+.document-chip {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r); transition: background 0.2s;
+}
+.document-chip:hover { background: var(--panel); border-color: var(--gold); }
+.document-chip-info { display: flex; align-items: center; gap: 12px; }
+.document-chip-icon { color: var(--gold); font-size: 18px; }
+.document-chip-name { font-size: 13px; color: var(--ink); font-weight: 500; }
+.document-chip-size { font-size: 11px; color: var(--muted); margin-left: 8px; }
+.document-chip-btn {
+  padding: 6px 12px; background: var(--gold); color: var(--bg);
+  font-size: 11px; font-weight: 600; border-radius: var(--r);
+  border: none; cursor: pointer;
+}
+
+@keyframes modal-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-scale-up { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+@media (max-width: 768px) {
+  .project-modal { height: 100%; max-height: 100vh; border-radius: 0; }
+  .project-modal-header { padding: 20px; }
+  .project-tabs { padding: 0 16px; }
+  .project-tab-content { padding: 20px; }
+}
+
+/* ─── TEAM DETAIL MODAL ─── */
+.team-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px); z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: modal-fade-in 0.3s ease-out forwards;
+}
+.team-modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  width: 100%; max-width: 600px; max-height: 90vh;
+  border-radius: var(--r); overflow: hidden;
+  display: flex; flex-direction: column;
+  animation: modal-scale-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
+}
+.team-modal-header {
+  padding: 32px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 24px;
+}
+.team-modal-photo {
+  width: 100px; height: 100px; border-radius: 50%;
+  border: 2px solid var(--gold); object-fit: cover;
+}
+.team-modal-title-group { flex: 1; }
+.team-modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--ink); }
+.team-modal-role { font-size: 13px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+.team-modal-close {
+  background: transparent; border: none; color: var(--muted);
+  cursor: pointer; font-size: 24px; line-height: 1;
+}
+.team-modal-content { padding: 32px; overflow-y: auto; }
+.team-detail-item { margin-bottom: 20px; }
+.team-detail-label { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+.team-detail-val { font-size: 14px; color: var(--ink); font-weight: 400; }
+.team-social-links { display: flex; gap: 12px; margin-top: 24px; }
+.team-social-link {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--panel);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); border: 1px solid var(--border); transition: 0.2s;
+}
+.team-social-link:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+.eng-social-mini {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.eng-social-mini a {
+  font-size: 14px; color: var(--muted); transition: 0.2s;
+}
+.eng-social-mini a:hover { color: var(--gold); }

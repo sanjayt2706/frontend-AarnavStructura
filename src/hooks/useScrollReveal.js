@@ -13,8 +13,32 @@ const useScrollReveal = () => {
       },
       { threshold: 0.08 }
     );
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+
+    const observeElements = () => {
+      document.querySelectorAll(".reveal").forEach((el) => {
+        if (!el.classList.contains("in")) {
+          observer.observe(el);
+        }
+      });
+    };
+
+    // Initial observation
+    observeElements();
+
+    // Watch for new .reveal elements added to the DOM
+    const mutationObserver = new MutationObserver(() => {
+      observeElements();
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 };
 
