@@ -16,6 +16,14 @@ export const resolveAssetUrl = (path) => {
     return path;
   }
   const cleanBase = API_BASE.replace(/\/$/, "");
+
+  // If the path is a GridFS ID (24 hex chars) or doesn't look like a path
+  // we route it to /api/files/:id
+  if (/^[0-9a-fA-F]{24}$/.test(path) || !path.startsWith("/")) {
+    return `${cleanBase}/api/files/${path}`;
+  }
+
+  // Legacy fallback for old /uploads paths (which will 404 on Render)
   return `${cleanBase}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
