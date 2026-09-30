@@ -16,18 +16,18 @@ const Footer = () => (
           
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <FaPhoneAlt style={{ color: "#F59E0B", flexShrink: 0 }} />
+              <FaPhoneAlt style={{ color: "#D4FD52", flexShrink: 0 }} />
               <a href="tel:+917760376348" style={{ color: "#FFFFFF", fontWeight: "600", fontSize: "15px" }}>+91 77603 76348</a>
             </div>
 
             <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-              <FaMapMarkerAlt style={{ color: "#F59E0B", marginTop: "4px", flexShrink: 0 }} />
+              <FaMapMarkerAlt style={{ color: "#D4FD52", marginTop: "4px", flexShrink: 0 }} />
               <span style={{ color: "#E4E4E7", fontSize: "14px" }}>Shivamogga, Karnataka 577201</span>
             </div>
 
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <FaWhatsapp style={{ color: "#F59E0B", flexShrink: 0 }} />
-              <a href="https://wa.me/917760376348" target="_blank" rel="noopener noreferrer" style={{ color: "#F59E0B", fontSize: "14px", fontWeight: "500" }}>
+              <FaWhatsapp style={{ color: "#D4FD52", flexShrink: 0 }} />
+              <a href="https://wa.me/917760376348" target="_blank" rel="noopener noreferrer" style={{ color: "#D4FD52", fontSize: "14px", fontWeight: "500" }}>
                 Chat on WhatsApp →
               </a>
             </div>
