@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { FaTimes, FaPaperPlane, FaWhatsapp, FaUserTie, FaCheckCircle } from "react-icons/fa";
 import { consultAi, handoffAi } from "../services/api";
+import { ConcentricRing } from "./ui/ConcentricRing";
+import { TextShimmer } from "./ui/TextShimmer";
 
 const INITIAL_MESSAGES = [
   {
@@ -209,8 +211,10 @@ const AiAssistant = () => {
 
               {loading && (
                 <div className="ai-msg bot" style={{ fontSize: "13px", color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span className="ai-loader-spinner" />
-                  <span>{loadingText}</span>
+                  <ConcentricRing style={{ width: "16px", height: "16px", color: "var(--color-accent)" }} />
+                  <TextShimmer duration={1.8} baseColor="var(--color-text-secondary)" shimmerColor="var(--color-accent)">
+                    {loadingText}
+                  </TextShimmer>
                 </div>
               )}
 

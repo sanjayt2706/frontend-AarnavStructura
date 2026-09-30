@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaWhatsapp, FaCheckCircle, FaExclamationCircle, FaSpinner } from "react-icons/fa";
+import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaWhatsapp, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { submitEnquiry } from "../services/api";
+import { ConcentricRing } from "./ui/ConcentricRing";
+import { TextShimmer } from "./ui/TextShimmer";
 
 const PROJECT_TYPES = [
   "Residential Turnkey Construction",
@@ -49,6 +51,7 @@ const Contact = () => {
       setTimeout(() => setStatus({ state: "idle", msg: "" }), 6000);
     } catch (err) {
       const errorMsg =
+        err.response?.data?.errors?.[0]?.msg ||
         err.response?.data?.message ||
         "Unable to send enquiry right now. Please message us directly on WhatsApp or call our office.";
       setStatus({ state: "err", msg: errorMsg });
@@ -241,11 +244,14 @@ const Contact = () => {
                 type="submit"
                 disabled={status.state === "sending"}
                 className="btn-accent"
-                style={{ width: "100%", marginTop: "8px", justifyContent: "center" }}
+                style={{ width: "100%", marginTop: "8px", justifyContent: "center", gap: "10px" }}
               >
                 {status.state === "sending" ? (
                   <>
-                    <FaSpinner className="fa-spin" /> Submitting...
+                    <ConcentricRing style={{ width: "16px", height: "16px", color: "#000000" }} />
+                    <TextShimmer baseColor="#000000" shimmerColor="#555555">
+                      Submitting Enquiry...
+                    </TextShimmer>
                   </>
                 ) : (
                   "Request Site Consultation"
