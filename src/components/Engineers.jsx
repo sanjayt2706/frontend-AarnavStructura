@@ -58,9 +58,9 @@ const Engineers = () => {
     getTeam()
       .then((data) => {
         if (isMounted) {
-          if (Array.isArray(data) && data.length > 0) {
+          if (Array.isArray(data)) {
             const active = data.filter((m) => m.is_active !== false && m.active !== false);
-            setTeam(active.length > 0 ? active : CURATED_DEFAULT_TEAM);
+            setTeam(active);
           } else {
             setTeam(CURATED_DEFAULT_TEAM);
           }

@@ -102,9 +102,9 @@ const Projects = () => {
     getProjects()
       .then((data) => {
         if (isMounted) {
-          if (Array.isArray(data) && data.length > 0) {
+          if (Array.isArray(data)) {
             const published = data.filter((p) => !p.status || p.status.toLowerCase() === "published");
-            setProjects(published.length > 0 ? published : DEFAULT_PROJECTS);
+            setProjects(published);
           } else {
             setProjects(DEFAULT_PROJECTS);
           }
