@@ -5,6 +5,7 @@ import Services from "../components/Services.jsx";
 import Process from "../components/Process.jsx";
 import Projects from "../components/Projects.jsx";
 import About from "../components/About.jsx";
+import Engineers from "../components/Engineers.jsx";
 import EngineeringApproach from "../components/EngineeringApproach.jsx";
 import Testimonials from "../components/Testimonials.jsx";
 import CostEstimator from "../components/CostEstimator.jsx";
@@ -26,6 +27,7 @@ const Home = () => {
       <Process />
       <Projects />
       <About />
+      <Engineers />
       <EngineeringApproach />
       <Testimonials />
       <CostEstimator />
