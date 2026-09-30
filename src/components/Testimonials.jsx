@@ -1,43 +1,37 @@
-const TESTIMONIALS = [
-  {
-    quote: "Aarnav Structura delivered our 3,200 sq ft villa on time and exactly within budget. The milestone billing system meant we always knew where our money was. Exceptional quality.",
-    name: "Ramesh Gowda",
-    role: "Villa Owner · Shivamogga",
-    initials: "RG"
-  },
-  {
-    quote: "From BBMP approvals to final handover, they managed everything. Our showroom fit-out was completed in 6 weeks flat. Professional, communicative, and precise.",
-    name: "Preethi Shetty",
-    role: "Retail Owner · Bengaluru",
-    initials: "PS"
-  },
-  {
-    quote: "The structural team's attention to IS code compliance gave us complete confidence. Regular site reports meant we were never in the dark. Highly recommend.",
-    name: "Vivek Kamath",
-    role: "Commercial Client · Mangaluru",
-    initials: "VK"
-  }
+const EXPECTATIONS = [
+  { title: "Clear scope", desc: "Detailed project requirements and architectural drawings before work begins." },
+  { title: "Documented estimates", desc: "Itemized BOQ breaking down quantities, material specs, and preliminary costs." },
+  { title: "Regular project updates", desc: "Structured progress reporting at key structural and milestone stages." },
+  { title: "Defined responsibilities", desc: "Single-point engineering accountability across design, approvals, and construction." },
+  { title: "Site coordination", desc: "Supervised execution ensuring structural drawings are accurately followed." },
+  { title: "Direct communication", desc: "Open access to project engineers and architects throughout the timeline." }
 ];
 
 const Testimonials = () => (
-  <section className="section-sm section-surface" id="testimonials">
+  <section className="section" id="testimonials">
     <div className="container">
-      <div className="reveal" style={{ textAlign: "center" }}>
-        <div className="s-eye" style={{ justifyContent: "center" }}>06 — Client voices</div>
-        <h2 className="s-heading">What our <em>clients say</em></h2>
+      <div className="s-header">
+        <div className="s-label">CLIENT EXPERIENCE</div>
+        <h2 className="s-heading">What Clients Can Expect</h2>
       </div>
-      <div className="testi-grid reveal">
-        {TESTIMONIALS.map((t) => (
-          <div className="testi-card" key={t.name}>
-            <div className="testi-stars">★★★★★</div>
-            <div className="testi-text">"{t.quote}"</div>
-            <div className="testi-author">
-              <div className="testi-av">{t.initials}</div>
-              <div>
-                <div className="testi-name">{t.name}</div>
-                <div className="testi-role">{t.role}</div>
-              </div>
-            </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
+        {EXPECTATIONS.map((exp) => (
+          <div
+            key={exp.title}
+            style={{
+              backgroundColor: "var(--color-surface)",
+              padding: "24px",
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-sm)"
+            }}
+          >
+            <h3 style={{ fontSize: "16px", fontWeight: "600", color: "var(--color-text)", marginBottom: "8px" }}>
+              {exp.title}
+            </h3>
+            <p style={{ fontSize: "14px", color: "var(--color-text-secondary)", lineHeight: "1.6" }}>
+              {exp.desc}
+            </p>
           </div>
         ))}
       </div>

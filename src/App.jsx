@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Home from "./pages/Home";
-import Loader from "./components/Loader";
+import { ThemeProvider } from "./context/ThemeContext";
 import { trackPageview } from "./services/api";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     trackPageview();
   }, []);
 
   return (
-    <>
-      {loading && <Loader onFinish={() => setLoading(false)} />}
+    <ThemeProvider>
       <Home />
-    </>
+    </ThemeProvider>
   );
 }
 

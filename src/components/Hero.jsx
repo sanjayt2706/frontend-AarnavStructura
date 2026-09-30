@@ -1,113 +1,47 @@
-import HERO_BG from "../assets/hero-logo.png";
-import useCounter from "../hooks/useCounter";
-
-const Stat = ({ target, suffix, label }) => {
-  const { ref, value } = useCounter(target);
-
-  return (
-    <div className="hstat">
-      <div className="hstat-n" ref={ref}>
-        {value}
-        {value >= target ? suffix : ""}
-      </div>
-
-      <div className="hstat-l">{label}</div>
-    </div>
-  );
-};
-
-const Word = ({ children, delay, gold }) => (
-  <span
-    className={`word-animate${gold ? " word-gold" : ""}`}
-    style={{ animationDelay: `${delay}ms` }}
-  >
-    {children}
-  </span>
-);
+import { FaArrowRight } from "react-icons/fa";
 
 const Hero = () => {
   return (
     <section className="hero" id="home">
-      {/* LEFT */}
-      <div className="hero-l">
-        <div className="hero-eyebrow">
-          <span className="hero-eyebrow-check">✓</span>
-          Shivamogga, Karnataka — Established 2020
-        </div>
+      <div className="container">
+        <div className="hero-grid">
+          {/* Left Content */}
+          <div className="hero-content">
+            <div className="hero-label">
+              CIVIL • STRUCTURAL • ARCHITECTURAL
+            </div>
 
-        <h1 className="hero-h1">
-          <div>
-            <Word delay={150}>BUILT</Word>{" "}
-            <Word delay={260}>ON</Word>{" "}
-            <Word delay={370} gold>
-              TRUST.
-            </Word>
+            <h1 className="hero-h1">
+              Construction and engineering,<br className="desktop-only" /> clearly planned from the start.
+            </h1>
+
+            <p className="hero-body">
+              Aarnav Structura provides architectural planning, structural engineering and construction services for residential and commercial projects.
+            </p>
+
+            <div style={{ fontSize: "14px", color: "var(--color-text-muted)", marginBottom: "24px", fontWeight: "500" }}>
+              📍 Shivamogga, Karnataka
+            </div>
+
+            <div className="hero-actions">
+              <a href="#contact" className="btn-accent">
+                Start a Project <FaArrowRight style={{ fontSize: "12px" }} />
+              </a>
+              <a href="#portfolio" className="btn-ghost">
+                View Projects
+              </a>
+            </div>
           </div>
 
-          <div>
-            <Word delay={520}>DELIVERED</Word>{" "}
-            <Word delay={630}>WITH</Word>{" "}
-            <Word delay={740} gold>
-              PRECISION.
-            </Word>
+          {/* Right Image Frame - Single Real Project Image */}
+          <div className="hero-image-frame">
+            <img
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80"
+              alt="Aarnav Structura Architecture & Construction Project"
+              className="hero-img"
+              loading="eager"
+            />
           </div>
-        </h1>
-
-        <p className="hero-body">
-          Aarnav Structura is Shivamogga's premier construction and civil
-          engineering firm — combining technical excellence, transparent
-          process, and client-first delivery across Karnataka.
-        </p>
-
-        <div className="hero-actions">
-          <a href="#contact" className="btn-primary">
-            Start your project
-          </a>
-
-          <a href="#portfolio" className="btn-ghost">
-            View our work
-          </a>
-        </div>
-
-        <div className="hero-trust">
-          <span>SUDA / BBMP Approved</span>
-
-          <span className="hero-trust-dot">•</span>
-
-          <span>IS Code Compliant</span>
-
-          <span className="hero-trust-dot">•</span>
-
-          <span>Licensed &amp; Insured</span>
-        </div>
-      </div>
-
-      {/* RIGHT */}
-      <div className="hero-r">
-        <div className="hero-r-logo-bg">
-          <img
-            src={HERO_BG}
-            alt="Aarnav Structura"
-            loading="eager"
-          />
-        </div>
-
-        <div className="hero-r-overlay"></div>
-
-        <div className="hero-r-grid"></div>
-
-        <div className="hero-location">
-          📍 Shivamogga · Karnataka · India
-        </div>
-
-        <div className="hero-stats">
-          <Stat target={50} suffix="+" label="Projects Delivered" />
-
-          <Stat target={10} suffix="+" label="Expert Team" />
-
-          <Stat target={100} suffix="%" label="IS Compliant" />
-
-          <Stat target={5} suffix="+" label="Yrs Avg Experience" />
         </div>
       </div>
     </section>

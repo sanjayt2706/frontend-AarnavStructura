@@ -62,6 +62,16 @@ export const getTeam = async () => {
 export const submitEnquiry = async (formData) =>
   API.post("/api/enquiry", formData);
 
+export const consultAi = async (message, messages = []) => {
+  const res = await API.post("/api/ai/consult", { message, messages });
+  return res.data;
+};
+
+export const handoffAi = async (handoffData) => {
+  const res = await API.post("/api/ai/handoff", handoffData);
+  return res.data;
+};
+
 export const trackPageview = async () =>
   API.post("/api/track/pageview", {
     page: window.location.pathname,

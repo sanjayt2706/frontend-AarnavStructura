@@ -1,24 +1,25 @@
 const STEPS = [
-  { num: "01", name: "Discovery", desc: "Site visit, requirement mapping, and feasibility analysis. We understand the full scope before we design." },
-  { num: "02", name: "Design & Quote", desc: "Architecture, 3D walkthroughs, detailed BOQ, and a fully transparent, fixed project quote." },
-  { num: "03", name: "Approvals", desc: "BBMP/BDA plan sanction, SUDA approvals, and all statutory clearances handled for you." },
-  { num: "04", name: "Build", desc: "Supervised construction with weekly reports and live access to your client project portal." },
-  { num: "05", name: "Handover", desc: "Quality audit, punch-list clearance, full documentation package, and 1-year defect liability." }
+  { num: "01", name: "DISCUSS", desc: "Understand the site, requirements, budget and intended use." },
+  { num: "02", name: "ASSESS", desc: "Review the site conditions, measurements and project constraints." },
+  { num: "03", name: "PLAN", desc: "Develop the architectural and structural requirements." },
+  { num: "04", name: "ESTIMATE", desc: "Prepare quantities, specifications and a preliminary cost." },
+  { num: "05", name: "EXECUTE", desc: "Coordinate construction and monitor progress." },
+  { num: "06", name: "HANDOVER", desc: "Complete the work, documentation and final inspection." }
 ];
 
 const Process = () => (
-  <section className="section-sm section-dark" id="process">
+  <section className="section" id="process">
     <div className="container">
-      <div className="process-header reveal">
-        <div className="s-eye">03 — How we work</div>
-        <h2 className="s-heading s-heading-light">Our <em>Process</em></h2>
+      <div className="s-header">
+        <div className="s-label">PROCESS</div>
+        <h2 className="s-heading">How We Work</h2>
       </div>
-      <div className="process-steps reveal">
+      <div className="process-steps">
         {STEPS.map((s) => (
           <div className="p-step" key={s.num}>
             <div className="p-num">{s.num}</div>
-            <div className="p-name">{s.name}</div>
-            <div className="p-desc">{s.desc}</div>
+            <h3 className="p-name">{s.name}</h3>
+            <p className="p-desc">{s.desc}</p>
           </div>
         ))}
       </div>
