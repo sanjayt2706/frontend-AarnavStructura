@@ -125,15 +125,12 @@ const Navbar = () => {
           <li>
             <a href="#estimator">Estimator</a>
           </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
         </ul>
 
-        {/* Right Group: Phone, Compact Theme Button, Lime Yellow CTA */}
+        {/* Right Group: Phone, Compact Theme Button, Gold CTA */}
         <div className="nav-right-group">
           <a href="tel:+917760376348" className="nav-phone-link desktop-only" title="Call Engineering Desk">
-            <FaPhoneAlt style={{ fontSize: "13px", color: "#D4FD52" }} />
+            <FaPhoneAlt style={{ fontSize: "13px", color: "#F59E0B" }} />
             <span>+91 77603 76348</span>
           </a>
 
@@ -149,7 +146,7 @@ const Navbar = () => {
           </button>
 
           <a href="#contact" className="hook-btn-lime desktop-only">
-            Get a Quote
+            Contact Us
           </a>
 
           <button
@@ -171,7 +168,7 @@ const Navbar = () => {
           <li><a href="#about" onClick={closeMenu}>About Us</a></li>
           <li><a href="#process" onClick={closeMenu}>Our Process</a></li>
           <li><a href="#estimator" onClick={closeMenu}>Cost Estimator</a></li>
-          <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
+          <li><a href="#contact" onClick={closeMenu}>Contact Us</a></li>
         </ul>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginTop: "24px" }}>
@@ -201,11 +198,11 @@ const Navbar = () => {
           </div>
 
           <a href="tel:+917760376348" className="btn-ghost" style={{ justifyContent: "center", color: "#FFFFFF", borderColor: "#333333", width: "100%" }}>
-            <FaPhoneAlt style={{ color: "#D4FD52" }} /> Call +91 77603 76348
+            <FaPhoneAlt style={{ color: "#F59E0B" }} /> Call +91 77603 76348
           </a>
 
           <a href="#contact" className="hook-btn-lime" style={{ textAlign: "center", justifyContent: "center", width: "100%" }} onClick={closeMenu}>
-            Get a Quote
+            Contact Us
           </a>
         </div>
       </div>
