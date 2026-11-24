@@ -82,35 +82,64 @@ export function SiteContentProvider({ children }) {
 
   useEffect(() => {
     let alive = true;
+    let loading = false;
+    let lastLoad = 0;
+    let lastJson = "";
 
     // First visit with a slow backend: stop the splash and show defaults until data arrives
     const splashTimer = setTimeout(() => alive && setState((s) => (s.hasData ? s : { ...s, hasData: true })), SPLASH_MAX_MS);
 
-    Promise.all([getContent, getProjects, getServices, getTeam, getTestimonials, getGallery].map(withRetry)).then(
-      ([content, projects, services, team, testimonials, gallery]) => {
-        if (!alive) return;
-        clearTimeout(splashTimer);
-        const next = {
-          ready: true,
-          hasData: true,
-          content: mergeContent(content),
-          projects: projects || [],
-          services: services || [],
-          // true only when the API could not be reached (then the site shows built-in samples)
-          servicesFailed: services === null,
-          team: team || [],
-          testimonials: testimonials || [],
-          // API down → built-in gallery; API up → exactly what the dashboard holds
-          gallery: gallery || GALLERY_DEFAULTS
-        };
-        setState(next);
-        // Remember what the dashboard currently says, for an instant next visit
-        if (content) writeCache({ content, projects: next.projects, services: next.services, team: next.team, testimonials: next.testimonials, gallery: next.gallery });
-      }
-    );
+    const load = async (isRefresh) => {
+      if (loading) return;
+      loading = true;
+      const [content, projects, services, team, testimonials, gallery] = await Promise.all(
+        [getContent, getProjects, getServices, getTeam, getTestimonials, getGallery].map(withRetry)
+      );
+      loading = false;
+      if (!alive) return;
+      // A background refresh that couldn't reach the server keeps what is on screen
+      if (isRefresh && !content) return;
+      lastLoad = Date.now();
+      clearTimeout(splashTimer);
+
+      const data = {
+        projects: projects || [],
+        services: services || [],
+        team: team || [],
+        testimonials: testimonials || [],
+        // API down → built-in gallery; API up → exactly what the dashboard holds
+        gallery: gallery || GALLERY_DEFAULTS
+      };
+      const json = JSON.stringify([content, data]);
+      if (isRefresh && json === lastJson) return; // nothing changed in the dashboard
+      lastJson = json;
+
+      setState({
+        ready: true,
+        hasData: true,
+        content: mergeContent(content),
+        ...data,
+        // true only when the API could not be reached (then the site shows built-in samples)
+        servicesFailed: services === null
+      });
+      // Remember what the dashboard currently says, for an instant next visit
+      if (content) writeCache({ content, ...data });
+    };
+
+    load(false);
+
+    // Coming back to this tab (e.g. after editing in the dashboard) re-checks for changes
+    const onVisible = () => {
+      if (document.visibilityState === "visible" && Date.now() - lastLoad > 5000) load(true);
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+
     return () => {
       alive = false;
       clearTimeout(splashTimer);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
     };
   }, []);
 
