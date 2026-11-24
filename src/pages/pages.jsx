@@ -471,10 +471,29 @@ export function Contact() {
             </Reveal>
             <Reveal delay={0.1}><ContactForm /></Reveal>
           </div>
-          {c.mapEmbedUrl && <iframe className="map" src={c.mapEmbedUrl} title="Office location" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />}
+          {c.mapEmbedUrl && <MapEmbed url={c.mapEmbedUrl} address={c.address} />}
         </div>
       </section>
     </>
+  );
+}
+
+/** Google Map that loads only when asked: keeps ~300 KB of Google scripts (and tracking) off the page until needed. */
+function MapEmbed({ url, address }) {
+  const [show, setShow] = useState(false);
+  if (show) return <iframe className="map" src={url} title="Office location" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />;
+  const search = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address || "")}`;
+  return (
+    <div className="map map-facade">
+      <div className="map-facade__in">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" stroke="currentColor" strokeWidth="1.6" /><circle cx="12" cy="10" r="2.6" stroke="currentColor" strokeWidth="1.6" /></svg>
+        {address && <p>{address}</p>}
+        <div className="map-facade__actions">
+          <button type="button" className="btn-block btn-block--maroon btn-block--sm" onClick={() => setShow(true)}>Show map</button>
+          {address && <a className="link-arrow" href={search} target="_blank" rel="noreferrer">Open in Google Maps <Arrow /></a>}
+        </div>
+      </div>
+    </div>
   );
 }
 

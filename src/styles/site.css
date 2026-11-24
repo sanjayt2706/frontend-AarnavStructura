@@ -602,3 +602,13 @@ body.no-scroll { overflow: hidden; }
 
 /* decorative watermark drawn by CSS so it isn't read as low-contrast text */
 .footer__big::before { content: attr(data-text); }
+
+/* map placeholder (real Google map loads on click) */
+.map-facade { display: grid; place-items: center; text-align: center; color: var(--text);
+  background-color: var(--paper-2);
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px; filter: none; }
+.map-facade__in { display: grid; justify-items: center; gap: 14px; padding: 32px 16px; }
+.map-facade__in svg { color: var(--maroon); }
+.map-facade__in p { font-size: 20px; font-weight: 600; }
+.map-facade__actions { display: flex; flex-wrap: wrap; gap: 20px 28px; align-items: center; justify-content: center; margin-top: 6px; }
