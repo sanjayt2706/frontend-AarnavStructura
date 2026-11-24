@@ -32,6 +32,8 @@ export function SiteContentProvider({ children }) {
           content: merged,
           projects: projects || [],
           services: services || [],
+          // true only when the API could not be reached (then the site shows built-in samples)
+          servicesFailed: services === null,
           team: team || [],
           testimonials: testimonials || [],
           // API down → built-in gallery; API up → exactly what the dashboard holds

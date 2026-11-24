@@ -15,8 +15,15 @@ export const NAV = [
   { to: "/contact", label: "Contact" }
 ];
 
+/** Menu links; Team is hidden until at least one team member is added in the dashboard. */
+export function useNav() {
+  const { team, ready } = useSite();
+  return NAV.filter((n) => n.to !== "/team" || !ready || team.length > 0);
+}
+
 export default function Header() {
   const { content } = useSite();
+  const nav = useNav();
   const { brand, contact } = content;
   const { pathname } = useLocation();
   const [solid, setSolid] = useState(false);
@@ -58,7 +65,7 @@ export default function Header() {
           </Link>
 
           <nav className="header__nav" aria-label="Main">
-            {NAV.map((n) => (
+            {nav.map((n) => (
               <NavLink key={n.to} to={n.to} className={({ isActive }) => (isActive ? "active" : "")}>
                 {n.label}
               </NavLink>
@@ -97,7 +104,7 @@ export default function Header() {
               </button>
             </div>
             <nav className="mnav__links">
-              {[{ to: "/", label: "Home" }, ...NAV].map((n, i) => (
+              {[{ to: "/", label: "Home" }, ...nav].map((n, i) => (
                 <motion.div key={n.to} initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 + i * 0.06, duration: 0.7, ease: EASE }}>
                   <Link to={n.to}>
                     <small>0{i + 1}</small>

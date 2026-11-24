@@ -87,6 +87,7 @@ export function WhatWeDo() {
       <section className="section">
         <div className="wrap">
           <SectionHead eyebrow={w.eyebrow} title={w.heading} />
+          {!services.length && <p className="lede">Our services will be listed here soon.</p>}
           <div className="svc-rows">
             {services.map((s, i) => (
               <div className="svc-row" key={s._id || i}>

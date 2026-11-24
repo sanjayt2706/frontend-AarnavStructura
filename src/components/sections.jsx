@@ -22,8 +22,9 @@ const FALLBACK_SERVICES = [
 
 /** Services from the dashboard, each with an image (its own, or a fallback). */
 export function useServices() {
-  const { services, content } = useSite();
-  const list = services.length ? services : FALLBACK_SERVICES;
+  const { services, servicesFailed, content } = useSite();
+  // Show exactly what the dashboard holds; samples only if the API is unreachable
+  const list = servicesFailed ? FALLBACK_SERVICES : services;
   const fb = content.whatWeDo.fallbackImages || [];
   return list.map((s, i) => ({ ...s, img: s.image || (fb.length ? fb[i % fb.length] : "") }));
 }
@@ -81,6 +82,7 @@ export function ServicesGrid() {
   const { content } = useSite();
   const services = useServices();
   const w = content.whatWeDo;
+  if (!services.length) return null;
   return (
     <section className="section section--ink">
       <div className="wrap">

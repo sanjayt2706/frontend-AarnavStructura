@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import { FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { useSite } from "../content/SiteContent";
 import { Img } from "./primitives";
-import { NAV } from "./Header";
+import { useNav } from "./Header";
 import { useServices } from "./sections";
 
 export default function Footer() {
   const { content } = useSite();
   const services = useServices();
+  const nav = useNav();
   const { footer, contact, brand } = content;
   const tel = (contact.phone || "").replace(/\s/g, "");
   const wa = (contact.whatsapp || "").replace(/\D/g, "");
@@ -43,7 +44,7 @@ export default function Footer() {
           <div>
             <h4>Company</h4>
             <ul>
-              {NAV.map((n) => (
+              {nav.map((n) => (
                 <li key={n.to}>
                   <Link to={n.to}>{n.label}</Link>
                 </li>
