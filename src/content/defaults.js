@@ -208,17 +208,17 @@ export const CONTENT_DEFAULTS = {
 
   pageHeaders: {
     aboutTitle: "About Us",
-    aboutImage: U("photo-1503387762-592deb58ef4e"),
+    aboutImage: "/images/gallery/villa-at-dusk.jpg",
     whatWeDoTitle: "What We Do",
-    whatWeDoImage: U("photo-1504307651254-35680f356dfd"),
+    whatWeDoImage: "/images/gallery/apartment-facade.jpg",
     projectsTitle: "Projects",
     projectsImage: "/images/work/white-residence.jpg",
     galleryTitle: "Gallery",
     galleryImage: "/images/gallery/board-room.jpg",
     teamTitle: "Our Team",
-    teamImage: U("photo-1541888946425-d81bb19240f5"),
+    teamImage: "/images/work/site-masonry.jpg",
     contactTitle: "Contact",
-    contactImage: U("photo-1429497419816-9ca5cfb4571a")
+    contactImage: "/images/gallery/entrance-driveway.jpg"
   },
 
   seo: {
