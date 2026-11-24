@@ -4,32 +4,96 @@ import { CONTENT_DEFAULTS, GALLERY_DEFAULTS, mergeWithDefaults } from "./default
 
 const SiteContext = createContext(null);
 
-const fallbackContent = () =>
-  Object.fromEntries(Object.keys(CONTENT_DEFAULTS).map((k) => [k, CONTENT_DEFAULTS[k]]));
+const CACHE_KEY = "as_site_cache_v1";
+// How long a first-time visitor sees the splash before we fall back to defaults
+// (the backend can take up to a minute to wake up on Render's free plan).
+const SPLASH_MAX_MS = 2500;
 
-export function SiteContentProvider({ children }) {
-  const [state, setState] = useState({
+const mergeContent = (content) => {
+  const out = {};
+  for (const k of Object.keys(CONTENT_DEFAULTS)) out[k] = mergeWithDefaults(CONTENT_DEFAULTS[k], content?.[k]);
+  return out;
+};
+
+function readCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const c = JSON.parse(raw);
+    return c && c.content ? c : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(data) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ...data, at: Date.now() }));
+  } catch {
+    /* storage full or blocked — the site still works without it */
+  }
+}
+
+/** Try once, and once more after a short pause (covers a backend that is still waking up). */
+async function withRetry(fn) {
+  try {
+    return await fn();
+  } catch {
+    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      return await fn();
+    } catch {
+      return null;
+    }
+  }
+}
+
+function initialState() {
+  const cached = readCache();
+  if (cached) {
+    // Returning visitor: show the last content we saw from the dashboard right away
+    return {
+      ready: false,
+      hasData: true,
+      content: mergeContent(cached.content),
+      projects: cached.projects || [],
+      services: cached.services || [],
+      servicesFailed: false,
+      team: cached.team || [],
+      testimonials: cached.testimonials || [],
+      gallery: cached.gallery || GALLERY_DEFAULTS
+    };
+  }
+  return {
     ready: false,
-    content: fallbackContent(),
+    hasData: false,
+    content: mergeContent(null),
     projects: [],
     services: [],
+    servicesFailed: false,
     team: [],
     testimonials: [],
     gallery: GALLERY_DEFAULTS
-  });
+  };
+}
+
+export function SiteContentProvider({ children }) {
+  const [state, setState] = useState(initialState);
 
   useEffect(() => {
     let alive = true;
-    const safe = (p) => p.catch(() => null);
 
-    Promise.all([safe(getContent()), safe(getProjects()), safe(getServices()), safe(getTeam()), safe(getTestimonials()), safe(getGallery())]).then(
+    // First visit with a slow backend: stop the splash and show defaults until data arrives
+    const splashTimer = setTimeout(() => alive && setState((s) => (s.hasData ? s : { ...s, hasData: true })), SPLASH_MAX_MS);
+
+    Promise.all([getContent, getProjects, getServices, getTeam, getTestimonials, getGallery].map(withRetry)).then(
       ([content, projects, services, team, testimonials, gallery]) => {
         if (!alive) return;
-        const merged = fallbackContent();
-        if (content) for (const k of Object.keys(merged)) merged[k] = mergeWithDefaults(CONTENT_DEFAULTS[k], content[k]);
-        setState({
+        clearTimeout(splashTimer);
+        const next = {
           ready: true,
-          content: merged,
+          hasData: true,
+          content: mergeContent(content),
           projects: projects || [],
           services: services || [],
           // true only when the API could not be reached (then the site shows built-in samples)
@@ -38,17 +102,21 @@ export function SiteContentProvider({ children }) {
           testimonials: testimonials || [],
           // API down → built-in gallery; API up → exactly what the dashboard holds
           gallery: gallery || GALLERY_DEFAULTS
-        });
+        };
+        setState(next);
+        // Remember what the dashboard currently says, for an instant next visit
+        if (content) writeCache({ content, projects: next.projects, services: next.services, team: next.team, testimonials: next.testimonials, gallery: next.gallery });
       }
     );
     return () => {
       alive = false;
+      clearTimeout(splashTimer);
     };
   }, []);
 
   // Keep favicon and default <title>/<meta description> in sync with the dashboard
   useEffect(() => {
-    if (!state.ready) return;
+    if (!state.hasData) return;
     const { brand, seo } = state.content;
     if (brand?.favicon) {
       let link = document.querySelector("link[rel='icon']");
@@ -60,7 +128,7 @@ export function SiteContentProvider({ children }) {
       link.href = resolveAssetUrl(brand.favicon);
     }
     if (seo?.description) document.querySelector("meta[name='description']")?.setAttribute("content", seo.description);
-  }, [state.ready, state.content]);
+  }, [state.hasData, state.content]);
 
   return <SiteContext.Provider value={state}>{children}</SiteContext.Provider>;
 }

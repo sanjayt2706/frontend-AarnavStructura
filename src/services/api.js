@@ -7,7 +7,8 @@ export const API_BASE = (
     : "https://aarnav-structura-backend.onrender.com")
 ).replace(/\/$/, "");
 
-const API = axios.create({ baseURL: API_BASE, timeout: 20000 });
+// Generous timeout: on Render's free plan a sleeping backend can take ~60s to wake up
+const API = axios.create({ baseURL: API_BASE, timeout: 90000 });
 
 /**
  * Turns whatever the admin stored into a usable URL:

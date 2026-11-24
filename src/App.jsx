@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { SiteContentProvider } from "./content/SiteContent";
+import { SiteContentProvider, useSite } from "./content/SiteContent";
 import { trackPageview } from "./services/api";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -17,12 +17,27 @@ function Page({ children }) {
   );
 }
 
+/** Shown only on a first visit, for at most a few seconds, while content loads. */
+function Splash() {
+  return (
+    <motion.div className="splash" initial={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.5 } }} aria-label="Loading">
+      <img src="/brand/mark-white.png" alt="" className="splash__mark" />
+      <span className="splash__bar"><span /></span>
+    </motion.div>
+  );
+}
+
 function Routed() {
   const location = useLocation();
+  const { hasData } = useSite();
 
   useEffect(() => {
     trackPageview(location.pathname);
   }, [location.pathname]);
+
+  if (!hasData) {
+    return <AnimatePresence><Splash /></AnimatePresence>;
+  }
 
   return (
     <>
