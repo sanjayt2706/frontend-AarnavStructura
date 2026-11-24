@@ -14,6 +14,14 @@ const INITIAL_MESSAGES = [
 
 const AiAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
+  // Stay out of the way of the hero tabs until the visitor starts scrolling
+  const [fabVisible, setFabVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setFabVisible(window.scrollY > window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -134,12 +142,12 @@ const AiAssistant = () => {
       {/* Subtle Floating Trigger */}
       <button
         type="button"
-        className="ai-trigger-fab"
+        className={`ai-trigger-fab ${fabVisible ? "is-visible" : ""}`}
         onClick={() => setIsOpen(true)}
         aria-label="Chat with Assistant"
       >
-        <span className="ai-pulse-dot" />
-        <span>Chat with Assistant →</span>
+        <svg className="ai-fab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>
+        <span className="ai-fab-label">Ask an engineer</span>
       </button>
 
       {/* Chat Modal */}
