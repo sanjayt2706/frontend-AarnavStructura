@@ -1,11 +1,15 @@
 import axios from "axios";
 
-export const API_BASE = (
-  import.meta.env.VITE_API_URL ||
-  (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)
-    ? "http://localhost:5000"
-    : "https://aarnav-structura-backend.onrender.com")
-).replace(/\/$/, "");
+const isLocal = typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+/**
+ * Where the backend lives.
+ * - Deployed site: same domain ("/api/..."). vercel.json forwards /api/* to the
+ *   Render backend, so browsers and privacy blockers (e.g. Brave Shields) see a
+ *   first-party request and there is no cross-domain (CORS) step to fail.
+ * - Local development: the backend on localhost:5000, or VITE_API_URL if set.
+ */
+export const API_BASE = (isLocal ? import.meta.env.VITE_API_URL || "http://localhost:5000" : "").replace(/\/$/, "");
 
 // Generous timeout: on Render's free plan a sleeping backend can take ~60s to wake up
 const API = axios.create({ baseURL: API_BASE, timeout: 90000 });

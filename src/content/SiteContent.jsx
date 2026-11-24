@@ -85,6 +85,8 @@ export function SiteContentProvider({ children }) {
     let loading = false;
     let lastLoad = 0;
     let lastJson = "";
+    let retryTimer = null;
+    let retries = 0;
 
     // First visit with a slow backend: stop the splash and show defaults until data arrives
     const splashTimer = setTimeout(() => alive && setState((s) => (s.hasData ? s : { ...s, hasData: true })), SPLASH_MAX_MS);
@@ -97,6 +99,13 @@ export function SiteContentProvider({ children }) {
       );
       loading = false;
       if (!alive) return;
+      // Couldn't reach the server (asleep, network hiccup): keep trying for ~2 minutes
+      if (!content && retries < 8) {
+        retries += 1;
+        clearTimeout(retryTimer);
+        retryTimer = setTimeout(() => load(true), 15000);
+      }
+      if (content) retries = 0;
       // A background refresh that couldn't reach the server keeps what is on screen
       if (isRefresh && !content) return;
       lastLoad = Date.now();
@@ -138,6 +147,7 @@ export function SiteContentProvider({ children }) {
     return () => {
       alive = false;
       clearTimeout(splashTimer);
+      clearTimeout(retryTimer);
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("focus", onVisible);
     };

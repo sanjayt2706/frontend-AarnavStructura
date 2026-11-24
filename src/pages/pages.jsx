@@ -366,7 +366,11 @@ function TeamGrid({ members }) {
           <div className="member__photo"><Img src={m.photo} alt={m.name} /></div>
           <h3 className="h-sm">{m.name}</h3>
           <div className="member__role">{m.role}</div>
-          {(m.designation || m.experience) && <p className="member__info">{[m.designation, m.experience].filter(Boolean).join(" · ")}</p>}
+          {(() => {
+            // the backend copies role into designation when it's left empty — don't repeat it
+            const info = [m.designation !== m.role ? m.designation : "", m.experience].filter(Boolean).join(" · ");
+            return info ? <p className="member__info">{info}</p> : null;
+          })()}
         </Reveal>
       ))}
     </div>
