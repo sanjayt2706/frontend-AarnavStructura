@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiX } from "react-icons/fi";
 import { useSite } from "../content/SiteContent";
@@ -13,11 +13,51 @@ import {
 } from "../components/sections";
 import { GalleryPreview, VideosStrip, VideoTile, Lightbox, useGallery } from "../components/gallery";
 
-function useTitle(title) {
+const SITE_ORIGIN = "https://aarnavstructura.in";
+
+function setMeta(attr, key, value) {
+  let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", value);
+}
+
+/**
+ * Per-page title, description, canonical URL and social-share preview.
+ * Text comes from the dashboard content, so it stays in sync with the page.
+ */
+function useTitle(title, description, image) {
   const { content } = useSite();
+  const { pathname } = useLocation();
   useEffect(() => {
-    document.title = title ? `${title} — ${content.brand.companyName}` : content.seo.title;
-  }, [title, content]);
+    const brand = content.brand.companyName;
+    const fullTitle = title ? `${title} — ${brand}` : content.seo.title;
+    const desc = String(description || content.seo.description || "").replace(/\s+/g, " ").trim().slice(0, 160);
+    const url = SITE_ORIGIN + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""));
+    const img = image ? resolveAssetUrl(image) : "/brand/og-image.jpg";
+    const absImg = img.startsWith("http") ? img : SITE_ORIGIN + img;
+
+    document.title = fullTitle;
+    setMeta("name", "description", desc);
+    setMeta("property", "og:title", fullTitle);
+    setMeta("property", "og:description", desc);
+    setMeta("property", "og:url", url);
+    setMeta("property", "og:image", absImg);
+    setMeta("name", "twitter:title", fullTitle);
+    setMeta("name", "twitter:description", desc);
+    setMeta("name", "twitter:image", absImg);
+    let canon = document.head.querySelector("link[rel='canonical']");
+    if (!canon) {
+      canon = document.createElement("link");
+      canon.rel = "canonical";
+      document.head.appendChild(canon);
+    }
+    canon.href = url;
+    setMeta("name", "robots", title === "Page not found" ? "noindex" : "index, follow");
+  }, [title, description, image, pathname, content]);
 }
 
 /* ---------------- Home ---------------- */
@@ -44,7 +84,7 @@ export function Home() {
 export function About() {
   const { content, team } = useSite();
   const h = content.pageHeaders;
-  useTitle(h.aboutTitle);
+  useTitle(h.aboutTitle, content.about.body || content.intro.body, h.aboutImage);
   return (
     <>
       <PageHero title={h.aboutTitle} image={h.aboutImage} lede={content.intro.body} crumbs={[{ label: h.aboutTitle }]} />
@@ -77,7 +117,7 @@ export function WhatWeDo() {
   const services = useServices();
   const h = content.pageHeaders;
   const w = content.whatWeDo;
-  useTitle(h.whatWeDoTitle);
+  useTitle(h.whatWeDoTitle, `${w.heading}. ${w.intro}`, h.whatWeDoImage);
   useEffect(() => {
     if (window.location.hash === "#sectors") setTimeout(() => document.getElementById("sectors")?.scrollIntoView({ behavior: "smooth" }), 400);
   }, []);
@@ -116,7 +156,7 @@ export function WhatWeDo() {
 export function Projects() {
   const { content, projects, ready } = useSite();
   const h = content.pageHeaders;
-  useTitle(h.projectsTitle);
+  useTitle(h.projectsTitle, `Residential and commercial projects designed and built by ${content.brand.companyName} across Karnataka.`, h.projectsImage);
   const cats = useMemo(() => ["All", ...Array.from(new Set(projects.map((p) => p.category).filter(Boolean)))], [projects]);
   const [cat, setCat] = useState("All");
   const list = cat === "All" ? projects : projects.filter((p) => p.category === cat);
@@ -156,7 +196,7 @@ export function ProjectDetail() {
   const [p, setP] = useState(() => projects.find((x) => (x._id || x.id) === id) || null);
   const [missing, setMissing] = useState(false);
   const [lb, setLb] = useState(-1);
-  useTitle(p?.title || "Project");
+  useTitle(p?.title || "Project", p ? [p.brief || p.description, p.location, p.category].filter(Boolean).join(" · ") : "", p?.cover_image || p?.image);
 
   useEffect(() => {
     let alive = true;
@@ -293,7 +333,7 @@ export function GalleryPage() {
   const { content, ready } = useSite();
   const h = content.pageHeaders;
   const g = content.gallerySection;
-  useTitle(h.galleryTitle);
+  useTitle(h.galleryTitle, `${g.heading}. ${g.intro}`, h.galleryImage);
   const { photos, videos } = useGallery();
   const [params, setParams] = useSearchParams();
   const tab = params.get("tab") === "videos" && videos.length ? "videos" : "photos";
@@ -332,8 +372,8 @@ export function GalleryPage() {
               <div className="masonry">
                 {shown.map((p, i) => (
                   <Reveal key={p._id || p.image} className="masonry__item" delay={(i % 3) * 0.06} y={30}>
-                    <button type="button" onClick={() => setOpen(i)} aria-label={`View ${p.title || "photo"}`}>
-                      <Img src={p.image} alt={p.title || ""} />
+                    <button type="button" onClick={() => setOpen(i)}>
+                      <Img src={p.image} alt="" sizes="(max-width: 700px) 100vw, 33vw" />
                       <span className="masonry__cap">{p.title}</span>
                     </button>
                   </Reveal>
@@ -363,7 +403,7 @@ function TeamGrid({ members }) {
     <div className="team">
       {members.map((m, i) => (
         <Reveal key={m._id || i} className="member" delay={(i % 4) * 0.08}>
-          <div className="member__photo"><Img src={m.photo} alt={m.name} /></div>
+          <div className="member__photo"><Img src={m.photo} alt={m.name} sizes="(max-width: 520px) 100vw, 25vw" /></div>
           <h3 className="h-sm">{m.name}</h3>
           <div className="member__role">{m.role}</div>
           {(() => {
@@ -380,7 +420,7 @@ function TeamGrid({ members }) {
 export function Team() {
   const { content, team, ready } = useSite();
   const h = content.pageHeaders;
-  useTitle(h.teamTitle);
+  useTitle(h.teamTitle, `Meet the engineers and architects behind ${content.brand.companyName}.`, h.teamImage);
   return (
     <>
       <PageHero title={h.teamTitle} image={h.teamImage} crumbs={[{ label: h.teamTitle }]} />
@@ -409,7 +449,7 @@ export function Contact() {
   const { content } = useSite();
   const c = content.contact;
   const h = content.pageHeaders;
-  useTitle(h.contactTitle);
+  useTitle(h.contactTitle, `${c.text} ${[c.phone, c.email, c.address].filter(Boolean).join(" · ")}`, h.contactImage);
   const tel = (c.phone || "").replace(/\s/g, "");
   const wa = (c.whatsapp || "").replace(/\D/g, "");
   return (

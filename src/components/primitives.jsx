@@ -1,19 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform, useReducedMotion, animate } from "framer-motion";
 import { resolveAssetUrl } from "../services/api";
+import imageSizes from "../content/imageSizes.json";
 
 export const EASE = [0.22, 1, 0.36, 1];
 
-/** Image that resolves dashboard ids/paths and fades in once loaded. */
-export function Img({ src, alt = "", className = "", eager = false, ...rest }) {
+/**
+ * Responsive sources so phones download small files:
+ * - photos bundled with the site → 640/1280px WebP copies (made at build time)
+ * - Unsplash defaults → the CDN's own resizing
+ * Dashboard uploads are resized on the server when uploaded.
+ */
+function srcSetFor(src) {
+  if (!src || typeof src !== "string") return null;
+  const m = imageSizes[src];
+  if (m?.v?.length) {
+    const base = src.replace(/\.(jpe?g|png)$/i, "");
+    return m.v.map((w) => `${base}-${w}.webp ${w}w`).join(", "); // the original JPG stays as src fallback
+  }
+  if (/^https:\/\/images\.unsplash\.com\//.test(src) && /[?&]w=\d+/.test(src)) {
+    return [640, 1280, 2000].map((w) => `${src.replace(/([?&])w=\d+/, `$1w=${w}`)} ${w}w`).join(", ");
+  }
+  return null;
+}
+
+/** Image that resolves dashboard ids/paths, picks a right-sized source and fades in once loaded. */
+export function Img({ src, alt = "", className = "", eager = false, sizes = "100vw", ...rest }) {
   const [loaded, setLoaded] = useState(false);
   const url = resolveAssetUrl(src);
   if (!url) return null;
+  const srcSet = srcSetFor(src);
+  const dims = typeof src === "string" ? imageSizes[src] : null;
   return (
     <img
       src={url}
+      srcSet={srcSet || undefined}
+      sizes={srcSet ? sizes : undefined}
+      width={dims?.w}
+      height={dims?.h}
       alt={alt}
       loading={eager ? "eager" : "lazy"}
+      fetchpriority={eager ? "high" : undefined}
       decoding="async"
       draggable="false"
       onLoad={() => setLoaded(true)}

@@ -42,7 +42,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4>Company</h4>
+            <h2 className="footer__h">Company</h2>
             <ul>
               {nav.map((n) => (
                 <li key={n.to}>
@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4>Services</h4>
+            <h2 className="footer__h">Services</h2>
             <ul>
               {services.slice(0, 6).map((s) => (
                 <li key={s._id || s.title}>
@@ -64,7 +64,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4>Contact</h4>
+            <h2 className="footer__h">Contact</h2>
             <ul>
               {contact.phone && <li><a href={`tel:${tel}`}>{contact.phone}</a></li>}
               {contact.email && <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>}
@@ -73,7 +73,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="footer__big" aria-hidden="true">{brand.companyName}</div>
+        <div className="footer__big" aria-hidden="true" data-text={brand.companyName} />
         <div className="footer__bottom">
           <span>{(footer.copyright || "").replace("{year}", new Date().getFullYear())}</span>
           <Link to="/contact">Start a project →</Link>

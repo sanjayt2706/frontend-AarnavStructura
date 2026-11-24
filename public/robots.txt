@@ -1,0 +1,6 @@
+# https://aarnavstructura.in
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://aarnavstructura.in/sitemap.xml

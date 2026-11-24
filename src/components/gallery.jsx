@@ -100,8 +100,8 @@ export function GalleryPreview() {
         <div className={`mosaic mosaic--${list.length}`}>
           {list.map((p, i) => (
             <Reveal key={p._id || p.image} delay={i * 0.07} className="mosaic__item">
-              <button type="button" onClick={() => setOpen(i)} aria-label={`View ${p.title || "photo"}`}>
-                <Img src={p.image} alt={p.title || ""} />
+              <button type="button" onClick={() => setOpen(i)}>
+                <Img src={p.image} alt="" sizes="(max-width: 760px) 100vw, 50vw" />
                 <span className="mosaic__cap">{p.category}<b>{p.title}</b></span>
               </button>
             </Reveal>

@@ -94,7 +94,7 @@ export function ServicesGrid() {
           {services.slice(0, 4).map((s, i) => (
             <Reveal key={s._id || i} delay={(i % 2) * 0.12}>
               <Link to="/what-we-do" className="svc">
-                <div className="svc__media"><Img src={s.img} alt={s.title} /></div>
+                <div className="svc__media"><Img src={s.img} alt={s.title} sizes="(max-width: 760px) 100vw, 50vw" /></div>
                 <div className="svc__body">
                   <span className="svc__num">{String(i + 1).padStart(2, "0")}</span>
                   <h3 className="svc__title">{s.title}</h3>
@@ -149,7 +149,7 @@ export function Sectors() {
                   transition={{ duration: 0.9, ease: EASE }}
                 >
                   <motion.div style={{ height: "100%" }} initial={{ scale: 1.15 }} animate={{ scale: 1 }} transition={{ duration: 1.4, ease: EASE }}>
-                    <Img src={cur.image} alt={cur.name} />
+                    <Img src={cur.image} alt={cur.name} sizes="(max-width: 900px) 100vw, 55vw" />
                   </motion.div>
                 </motion.div>
               </AnimatePresence>
@@ -173,7 +173,7 @@ export function ProjectCard({ p, onClickCapture }) {
     <Link to={`/projects/${id}`} className="pcard" onClickCapture={onClickCapture} draggable="false">
       <div className="pcard__media">
         {p.category && <span className="pcard__tag">{p.category}</span>}
-        <Img src={p.cover_image || p.image} alt={p.title} />
+        <Img src={p.cover_image || p.image} alt={p.title} sizes="(max-width: 620px) 90vw, 34vw" />
       </div>
       <div className="pcard__meta">
         <span>{p.location}</span>

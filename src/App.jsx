@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { SiteContentProvider, useSite } from "./content/SiteContent";
 import { trackPageview } from "./services/api";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import AiAssistant from "./components/AiAssistant";
 import { EASE } from "./components/primitives";
 import { Home, About, WhatWeDo, Projects, ProjectDetail, GalleryPage, Team, Contact, NotFound } from "./pages/pages";
+
+// Loaded after the page so it isn't part of the first download
+const AiAssistant = lazy(() => import("./components/AiAssistant"));
 
 function Page({ children }) {
   return (
@@ -66,7 +68,9 @@ function Routed() {
         />
       </AnimatePresence>
       <Footer />
-      <AiAssistant />
+      <Suspense fallback={null}>
+        <AiAssistant />
+      </Suspense>
     </>
   );
 }

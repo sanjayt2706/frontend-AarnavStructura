@@ -156,7 +156,7 @@ export function SiteContentProvider({ children }) {
   // Keep favicon and default <title>/<meta description> in sync with the dashboard
   useEffect(() => {
     if (!state.hasData) return;
-    const { brand, seo } = state.content;
+    const { brand } = state.content;
     if (brand?.favicon) {
       let link = document.querySelector("link[rel='icon']");
       if (!link) {
@@ -166,7 +166,7 @@ export function SiteContentProvider({ children }) {
       }
       link.href = resolveAssetUrl(brand.favicon);
     }
-    if (seo?.description) document.querySelector("meta[name='description']")?.setAttribute("content", seo.description);
+    // (title/description are set per page in pages.jsx → useTitle)
   }, [state.hasData, state.content]);
 
   return <SiteContext.Provider value={state}>{children}</SiteContext.Provider>;
